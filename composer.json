@@ -12,7 +12,13 @@
     "homepage": "https://github.com/tjmpromos/sortable-gallery",
     "keywords": ["Laravel", "SortableGallery"],
     "require": {
-        "illuminate/support": "~9"
+        "illuminate/support": "~9",
+        "filament/filament": "^2.16",
+        "spatie/laravel-tags": "^4.3",
+        "spatie/laravel-medialibrary": "^10.5",
+        "filament/spatie-laravel-media-library-plugin": "^2.16",
+        "filament/spatie-laravel-tags-plugin": "^2.16",
+        "livewire/livewire": "^2.10"
     },
     "require-dev": {
         "phpunit/phpunit": "~9.0",
@@ -31,10 +37,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tjmpromos\\SortableGallery\\SortableGalleryServiceProvider"
+                "Tjmpromos\\SortableGallery\\SortableGalleryServiceProvider",
+                "Tjmpromos\\SortableGallery\\FilamentSortableGalleryServiceProvider"
             ],
             "aliases": {
-                "SortableGallery": "Tjmpromos\\SortableGallery\\Facades\\SortableGallery"
+
             }
         }
     }

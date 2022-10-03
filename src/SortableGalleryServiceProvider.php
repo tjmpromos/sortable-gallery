@@ -3,6 +3,8 @@
 namespace Tjmpromos\SortableGallery;
 
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
+use Tjmpromos\SortableGallery\Http\Livewire\SortableGallery;
 
 class SortableGalleryServiceProvider extends ServiceProvider
 {
@@ -13,10 +15,10 @@ class SortableGalleryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'tjmpromos');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'tjmpromos');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        Livewire::component('sortable-gallery', SortableGallery::class);
+
+         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sortable-gallery');
+         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -34,19 +36,9 @@ class SortableGalleryServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/sortable-gallery.php', 'sortable-gallery');
 
         // Register the service the package provides.
-        $this->app->singleton('sortable-gallery', function ($app) {
-            return new SortableGallery;
-        });
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return ['sortable-gallery'];
+//        $this->app->singleton('sortable-gallery', function ($app) {
+//            return new SortableGallery;
+//        });
     }
 
     /**
@@ -62,14 +54,14 @@ class SortableGalleryServiceProvider extends ServiceProvider
         ], 'sortable-gallery.config');
 
         // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/tjmpromos'),
-        ], 'sortable-gallery.views');*/
+        $this->publishes([
+            __DIR__.'/../resources/views' => base_path('resources/views/vendor/sortable-gallery'),
+        ], 'sortable-gallery.views');
 
         // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/tjmpromos'),
-        ], 'sortable-gallery.views');*/
+//        $this->publishes([
+//            __DIR__.'/../resources/assets' => public_path('vendor/tjmpromos'),
+//        ], 'sortable-gallery.views');
 
         // Publishing the translation files.
         /*$this->publishes([

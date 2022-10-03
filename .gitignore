@@ -1,0 +1,7 @@
+/vendor
+/.idea
+/node_modules
+/composer.lock
+.env
+!/.gitignore
+.DS_Store

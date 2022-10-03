@@ -1,0 +1,41 @@
+{
+    "name": "tjmpromos/sortable-gallery",
+    "description": ":package_description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Author Name",
+            "email": "author@email.com",
+            "homepage": "http://author.com"
+        }
+    ],
+    "homepage": "https://github.com/tjmpromos/sortable-gallery",
+    "keywords": ["Laravel", "SortableGallery"],
+    "require": {
+        "illuminate/support": "~9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tjmpromos\\SortableGallery\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tjmpromos\\SortableGallery\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tjmpromos\\SortableGallery\\SortableGalleryServiceProvider"
+            ],
+            "aliases": {
+                "SortableGallery": "Tjmpromos\\SortableGallery\\Facades\\SortableGallery"
+            }
+        }
+    }
+}

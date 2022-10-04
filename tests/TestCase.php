@@ -22,8 +22,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            SortableGalleryServiceProvider::class,
             LivewireServiceProvider::class,
+            SortableGalleryServiceProvider::class,
         ];
     }
 

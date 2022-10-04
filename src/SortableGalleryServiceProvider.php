@@ -15,6 +15,7 @@ class SortableGalleryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // TODO: this causes PHPstan to fail
         Livewire::component('sortable-gallery', SortableGallery::class);
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sortable-gallery');
@@ -33,6 +34,8 @@ class SortableGalleryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+
+
         $this->mergeConfigFrom(__DIR__.'/../config/sortable-gallery.php', 'sortable-gallery');
 
         // Register the service the package provides.

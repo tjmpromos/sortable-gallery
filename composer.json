@@ -1,20 +1,40 @@
 {
     "name": "tjmpromos/sortable-gallery",
-    "description": ":package_description",
+    "description": "Provides a sortable image gallery component with a Filament admin interface.",
     "license": "MIT",
     "authors": [
         {
-            "name": "Author Name",
-            "email": "author@email.com",
-            "homepage": "http://author.com"
+            "name": "Mike Wall",
+            "email": "daikazu@gmail.com",
+            "homepage": "https://mikewall.dev"
+        },
+        {
+            "name": "Cory Dymond",
+            "email": "dymondcory@gmail.com"
         }
     ],
     "homepage": "https://github.com/tjmpromos/sortable-gallery",
-    "keywords": ["Laravel", "SortableGallery"],
+    "keywords": [
+        "tjmpromos",
+        "laravel",
+        "sortable-gallery",
+        "filament",
+        "filament-package"
+    ],
     "require": {
-        "illuminate/support": "~9"
+        "php": "^8.1",
+        "illuminate/support": ">=9",
+        "filament/filament": "^2.16",
+        "spatie/laravel-tags": "^4.3",
+        "spatie/laravel-medialibrary": "^10.5",
+        "filament/spatie-laravel-media-library-plugin": "^2.16",
+        "filament/spatie-laravel-tags-plugin": "^2.16",
+        "livewire/livewire": "^2.10"
     },
     "require-dev": {
+        "laravel/pint": "^1.1",
+        "pestphp/pest": "^1.22",
+        "pestphp/pest-plugin-laravel": "^1.3",
         "phpunit/phpunit": "~9.0",
         "orchestra/testbench": "~7"
     },
@@ -28,14 +48,28 @@
             "Tjmpromos\\SortableGallery\\Tests\\": "tests"
         }
     },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
-                "Tjmpromos\\SortableGallery\\SortableGalleryServiceProvider"
+                "Tjmpromos\\SortableGallery\\SortableGalleryServiceProvider",
+                "Tjmpromos\\SortableGallery\\FilamentSortableGalleryServiceProvider"
             ],
             "aliases": {
-                "SortableGallery": "Tjmpromos\\SortableGallery\\Facades\\SortableGallery"
+
             }
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

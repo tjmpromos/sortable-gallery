@@ -10,7 +10,7 @@ This is a quickly installable, sortable gallery for Laravel applications. Under 
 Via Composer
 
 ``` bash
-$ composer require tjmpromos/sortable-gallery
+composer require tjmpromos/sortable-gallery
 ```
 
 ## Getting Started
@@ -28,7 +28,9 @@ Each time you upgrade Filament, you need to run the filament:upgrade command. We
 
 If you don't have one, you may create a new user account using:
 
-`php artisan make:filament-user`
+``` bash
+php artisan make:filament-user
+```
 
 Now, you can visit your admin panel at /admin to sign in with the credentials you just created.
 
@@ -44,7 +46,9 @@ We highly recommend following the appropriate [installation instructions](https:
 
 But first things first! You should probably publish the config file so that you can create your categories. You can do that by running:
 
-`php artisan vendor:publish --tag=sortable-gallery.config`
+``` bash
+php artisan vendor:publish --tag=sortable-gallery.config
+```
 
 This will create `config/sortable-gallery.php` which will give you a few options such as where you store media, your tag types and the size of your preview images.
 
@@ -62,7 +66,9 @@ This allows you to set the image preview size for displaying on the front end.
 
 ### Publishing and Editing the Livewire Component
 
-`php artisan vendor:publish --tag=sortable-gallery.views`
+``` bash
+php artisan vendor:publish --tag=sortable-gallery.views
+```
 
 We've tried to make the UI as standard and non-intrusive as possible, but you'll likely want to make some edits to the styling. This command will publish the livewire component into `resources/vendor/sortable-gallery/livewire` in your project.
 
@@ -73,7 +79,7 @@ Please see the [changelog](changelog.md) for more information on what has change
 ## Testing
 
 ``` bash
-$ composer test
+composer test
 ```
 
 ## Contributing

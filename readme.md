@@ -15,7 +15,7 @@ $ composer require tjmpromos/sortable-gallery
 
 ## Getting Started
 
-If you aren't currently using Filament, you'll need to run a few commands to get started.
+If you aren't currently using Filament, you'll need to run a few commands to get started. We recommend checkout [Filament's documentation](https://filamentphp.com/docs/2.x/admin/installation), but here are the basics just to get you started quickly.
 
 Each time you upgrade Filament, you need to run the filament:upgrade command. We recommend adding this to your composer.json's post-update-cmd:
 

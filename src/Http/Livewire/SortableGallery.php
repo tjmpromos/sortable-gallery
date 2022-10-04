@@ -3,6 +3,8 @@
 namespace Tjmpromos\SortableGallery\Http\Livewire;
 
 
+use Illuminate\Support\Facades\Cache;
+use Spatie\Tags\Tag;
 use Tjmpromos\SortableGallery\Models\GalleryImage;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,7 +20,12 @@ class SortableGallery extends Component
 
     public function getFilterTypesProperty()
     {
-        return config('sortable-gallery.tag_types');
+        return Cache::remember(md5(config('website.site_code').'_gallery_image_tags'), 60, function () {
+            return collect(config('sortable-gallery.tag_types'))
+                ->mapWithKeys(fn($tagType) => [$tagType => Tag::getWithType($tagType)->pluck('name', 'id')->sort()])
+                ->filter(fn($val) => $val->count() > 0)
+                ->all();
+        });
     }
 
     public function queryGalleryImages()

@@ -5,6 +5,7 @@ namespace Tjmpromos\SortableGallery\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -23,6 +24,11 @@ class GalleryImage extends Model implements HasMedia
         'is_active' => 'boolean',
     ];
 
+    /**
+     * Register the media collections.
+     *
+     * @return void
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('gallery_images')
@@ -30,6 +36,13 @@ class GalleryImage extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg', 'image/png']);
     }
 
+    /**
+     * Register the media conversions.
+     *
+     * @param  Media|null  $media
+     * @return void
+     * @throws InvalidManipulation
+     */
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
@@ -38,9 +51,11 @@ class GalleryImage extends Model implements HasMedia
             ->performOnCollections('gallery_images');
 
         $this->addMediaConversion('preview')
-            ->crop(Manipulations::CROP_CENTER, 300, 300)
-            ->width(300)
-            ->height(300)
+            ->crop(Manipulations::CROP_CENTER,
+                config('sortable-gallery.preview_image_size.width'),
+                config('sortable-gallery.preview_image_size.height'))
+            ->width(config('sortable-gallery.preview_image_size.width'))
+            ->height(config('sortable-gallery.preview_image_size.height'))
             ->optimize()
             ->performOnCollections('gallery_images');
     }

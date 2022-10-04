@@ -17,8 +17,8 @@ class SortableGalleryServiceProvider extends ServiceProvider
     {
         Livewire::component('sortable-gallery', SortableGallery::class);
 
-         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sortable-gallery');
-         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'sortable-gallery');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {

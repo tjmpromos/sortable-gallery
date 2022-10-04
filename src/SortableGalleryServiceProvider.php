@@ -2,6 +2,7 @@
 
 namespace Tjmpromos\SortableGallery;
 
+use Illuminate\Foundation\Console\AboutCommand;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Tjmpromos\SortableGallery\Http\Livewire\SortableGallery;
@@ -17,6 +18,8 @@ class SortableGalleryServiceProvider extends ServiceProvider
     {
         // TODO: this causes PHPstan to fail
         Livewire::component('sortable-gallery', SortableGallery::class);
+
+        AboutCommand::add('Sortable Gallery', fn () => ['Version' => '1.0.0']);
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'sortable-gallery');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
@@ -47,29 +50,30 @@ class SortableGalleryServiceProvider extends ServiceProvider
      *
      * @return void
      */
+    
     protected function bootForConsole(): void
     {
-        // Publishing the configuration file.
+//        Publishing the configuration file.
         $this->publishes([
             __DIR__.'/../config/sortable-gallery.php' => config_path('sortable-gallery.php'),
         ], 'sortable-gallery.config');
 
-        // Publishing the views.
+//        Publishing the views.
         $this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/sortable-gallery'),
         ], 'sortable-gallery.views');
 
-        // Publishing assets.
+//        Publishing assets.
 //        $this->publishes([
 //            __DIR__.'/../resources/assets' => public_path('vendor/tjmpromos'),
-//        ], 'sortable-gallery.views');
+//        ], 'sortable-gallery.assets');
 
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/tjmpromos'),
-        ], 'sortable-gallery.views');*/
+//        Publishing the translation files.
+//        $this->publishes([
+//            __DIR__.'/../resources/lang' => resource_path('lang/vendor/tjmpromos'),
+//        ], 'sortable-gallery.translations');
 
-        // Registering package commands.
-        // $this->commands([]);
+//        Registering package commands.
+//        $this->commands([]);
     }
 }

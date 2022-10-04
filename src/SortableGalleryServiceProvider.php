@@ -50,7 +50,6 @@ class SortableGalleryServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    
     protected function bootForConsole(): void
     {
 //        Publishing the configuration file.

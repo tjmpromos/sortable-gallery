@@ -41,6 +41,7 @@ class GalleryImage extends Model implements HasMedia
      *
      * @param  Media|null  $media
      * @return void
+     *
      * @throws InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void

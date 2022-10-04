@@ -2,9 +2,9 @@
 
 namespace Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages;
 
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource;
 
 class EditGalleryImage extends EditRecord
 {

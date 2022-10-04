@@ -2,8 +2,8 @@
 
 namespace Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages;
 
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource;
 use Filament\Resources\Pages\CreateRecord;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource;
 
 class CreateGalleryImage extends CreateRecord
 {

@@ -7,7 +7,6 @@ use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Tjmpromos\SortableGallery\SortableGalleryServiceProvider;
 
-
 class TestCase extends Orchestra
 {
     protected function setUp(): void

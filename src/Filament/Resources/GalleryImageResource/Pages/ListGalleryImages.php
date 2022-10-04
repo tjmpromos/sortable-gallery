@@ -2,9 +2,9 @@
 
 namespace Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages;
 
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource;
 
 class ListGalleryImages extends ListRecords
 {

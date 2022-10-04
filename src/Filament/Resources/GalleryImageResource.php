@@ -2,10 +2,6 @@
 
 namespace Tjmpromos\SortableGallery\Filament\Resources;
 
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\CreateGalleryImage;
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\EditGalleryImage;
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\ListGalleryImages;
-use Tjmpromos\SortableGallery\Models\GalleryImage;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -19,6 +15,10 @@ use Filament\Tables;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\CreateGalleryImage;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\EditGalleryImage;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\ListGalleryImages;
+use Tjmpromos\SortableGallery\Models\GalleryImage;
 
 class GalleryImageResource extends Resource
 {

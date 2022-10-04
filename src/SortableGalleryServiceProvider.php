@@ -34,8 +34,6 @@ class SortableGalleryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
-
         $this->mergeConfigFrom(__DIR__.'/../config/sortable-gallery.php', 'sortable-gallery');
 
         // Register the service the package provides.

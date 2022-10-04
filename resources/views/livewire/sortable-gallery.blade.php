@@ -108,8 +108,6 @@
             </div>
         </div>
 
-        {{--        <main class="mx-auto max-w-2xl py-16 px-4 sm:px-6 lg:max-w-7xl lg:px-8"> --}}
-
         <main class="mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 
             <div class="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
@@ -156,14 +154,13 @@
 
                 </aside>
 
-                {{-- Product grid --}}
+                {{-- Image grid --}}
                 <div class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
 
                     <div xxxclass="rounded-lg border-4 border-dashed border-gray-200 bg-white lg:h-full">
 
                         <div class="">
                             <div class="mx-auto max-w-2xl px-4 lg:max-w-7xl">
-                                {{--                                <h2 class="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2> --}}
 
                                 <div class="min-h-12 flex justify-end">
                                     @if (count($filters) > 0)

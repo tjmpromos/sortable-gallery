@@ -62,6 +62,11 @@ class SortableGalleryServiceProvider extends ServiceProvider
             __DIR__.'/../resources/views' => base_path('resources/views/vendor/sortable-gallery'),
         ], 'sortable-gallery.views');
 
+//        Publishing the migration files.
+        $this->publishes([
+            __DIR__.'/../database/migrations' => database_path('database/migrations'),
+        ], 'sortable-gallery.migrations');
+
 //        Publishing assets.
 //        $this->publishes([
 //            __DIR__.'/../resources/assets' => public_path('vendor/tjmpromos'),

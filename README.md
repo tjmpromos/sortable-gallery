@@ -21,7 +21,15 @@ composer require tjmpromos/sortable-gallery
 
 ## Getting Started
 
+### New Applications
+
 If you aren't currently using Filament, you'll need to run a few commands to get started. We recommend checking out [Filament's documentation](https://filamentphp.com/docs/2.x/admin/installation) for installation instructions, but here are the basics just to get you started quickly.
+
+You'll need to migrate some tables into your database to get started. To do this, simply run:
+
+``` bash
+php artisan migrate
+```
 
 Each time you upgrade Filament, you need to run the filament:upgrade command. We recommend adding this to your composer.json's post-update-cmd:
 
@@ -32,7 +40,7 @@ Each time you upgrade Filament, you need to run the filament:upgrade command. We
 ],
 ```
 
-If you don't have one, you may create a new user account using:
+You can now create a new user account using:
 
 ``` bash
 php artisan make:filament-user
@@ -41,6 +49,15 @@ php artisan make:filament-user
 Now, you can visit your admin panel at /admin to sign in with the credentials you just created.
 
 Once you are logged in, you will see Gallery Images on the left hand side and you can begin adding images.
+
+
+### Existing Applications
+
+If you are currently using Filament or have a media table, you may run into conflicts while migrating. To help alleviate this issue, we've provided some publishable migrations. You can export them to your `database/migrations` directory by running:
+
+``` bash
+php artisan vendor:publish --tag=sortable-gallery.migrations
+```
 
 ### Installing TailwindCSS
 

@@ -20,15 +20,12 @@ class SortableGalleryServiceProvider extends PackageServiceProvider
             ->name('sortable-gallery')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigrations(['create_media_table','create_tags_table','create_gallery_mages_table'])
-        ;
+            ->hasMigrations(['create_media_table', 'create_tags_table', 'create_gallery_mages_table']);
     }
 
     public function packageBooted()
     {
-
         // TODO: this causes PHPStan to fail
         Livewire::component('sortable-gallery', SortableGallery::class);
-
     }
 }

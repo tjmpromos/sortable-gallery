@@ -9,14 +9,12 @@ use Tjmpromos\SortableGallery\SortableGalleryServiceProvider;
 
 class TestCase extends Orchestra
 {
-
     /**
      * Automatically enables package discoveries.
      *
      * @var bool
      */
     protected $enablesPackageDiscoveries = true;
-
 
     protected function setUp(): void
     {

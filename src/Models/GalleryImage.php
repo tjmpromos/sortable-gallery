@@ -21,7 +21,7 @@ class GalleryImage extends Model implements HasMedia
     protected $guarded = ['id'];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'active' => 'boolean',
     ];
 
     /**
@@ -71,6 +71,6 @@ class GalleryImage extends Model implements HasMedia
      */
     public function scopeActive($query): void
     {
-        $query->where('is_active', 1);
+        $query->where('active', 1);
     }
 }

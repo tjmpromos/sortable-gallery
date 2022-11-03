@@ -2,6 +2,10 @@
 
 namespace Tjmpromos\SortableGallery\Http\Livewire;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,7 +22,7 @@ class SortableGallery extends Component
 
     public function getFilterTypesProperty()
     {
-        return Cache::remember(md5(config('website.site_code').'_gallery_image_tags'), 60, function () {
+        return Cache::remember(md5('tjm_sortable_gallery_image_tags'), 60, function () {
             return collect(config('sortable-gallery.tag_types'))
                 ->mapWithKeys(fn ($tagType) => [$tagType => Tag::getWithType($tagType)->pluck('name', 'id')->sort()])
                 ->filter(fn ($val) => $val->count() > 0)
@@ -26,14 +30,16 @@ class SortableGallery extends Component
         });
     }
 
-    public function queryGalleryImages()
+    public function queryGalleryImages(): LengthAwarePaginator|array
     {
         if (count($this->filters) > 0) {
             $images = GalleryImage::active()
                 ->withAnyTagsOfAnyType($this->filters)
+                ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         } else {
             $images = GalleryImage::active()
+                ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         }
 
@@ -59,7 +65,10 @@ class SortableGallery extends Component
         $this->resetPage();
     }
 
-    public function render()
+    /**
+     * @return View|Factory|Application
+     */
+    public function render(): View|Factory|Application
     {
         return view('sortable-gallery::livewire.sortable-gallery', [
             'galleryImages' => $this->queryGalleryImages(),

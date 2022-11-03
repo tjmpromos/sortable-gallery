@@ -25,7 +25,6 @@ class SortableGalleryServiceProvider extends PackageServiceProvider
 
     public function packageBooted()
     {
-        // TODO: this causes PHPStan to fail
         Livewire::component('sortable-gallery', SortableGallery::class);
     }
 }

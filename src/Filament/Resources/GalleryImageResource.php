@@ -13,8 +13,10 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BooleanColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\CreateGalleryImage;
 use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\EditGalleryImage;
 use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\ListGalleryImages;
@@ -57,7 +59,7 @@ class GalleryImageResource extends Resource
     {
         return $table
             ->columns([
-                BooleanColumn::make('is_active')->grow(false),
+                ToggleColumn::make('active')->grow(false),
                 SpatieMediaLibraryImageColumn::make('gallery_image')
                     ->grow(false)
                     ->disk(config('sortable-gallery.media_library.disk_name'))

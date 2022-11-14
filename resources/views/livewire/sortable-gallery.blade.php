@@ -183,11 +183,7 @@
                                                         data-caption="{{ $galleryImage->name }}"
                                                         class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
-                                                            {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
-                                                                    'alt' => $galleryImage->name,
-                                                                    'class' => 'mx-auto rounded-md object-cover overflow-hidden',
-                                                                    'loading' => 'lazy',
-                                                                ]) }}
+                                                            <img class="mx-auto rounded-md object-cover overflow-hidden" src="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}" alt="{{ $galleryImage->name }}">
                                                         </div>
                                                         <div class="col-span-3 text-center">
                                                             <figcaption class="sr-only px-3 text-sm">

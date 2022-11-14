@@ -157,7 +157,7 @@
                 {{-- Image grid --}}
                 <div class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
 
-                    <div class="rounded-lg border-4 border-dashed border-gray-200 bg-white lg:h-full">
+                    <div class="lg:h-full">
 
                         <div class="">
                             <div class="mx-auto max-w-2xl px-4 lg:max-w-7xl">
@@ -183,7 +183,11 @@
                                                         data-caption="{{ $galleryImage->name }}"
                                                         class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
-                                                            <img class="mx-auto rounded-md object-cover overflow-hidden" src="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}" alt="{{ $galleryImage->name }}">
+                                                            {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
+                                                                    'alt' => $galleryImage->name,
+                                                                    'class' => 'mx-auto rounded-md object-cover overflow-hidden',
+                                                                    'loading' => 'lazy',
+                                                                ]) }}
                                                         </div>
                                                         <div class="col-span-3 text-center">
                                                             <figcaption class="sr-only px-3 text-sm">

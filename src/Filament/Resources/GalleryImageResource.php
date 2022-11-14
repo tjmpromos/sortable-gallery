@@ -45,6 +45,7 @@ class GalleryImageResource extends Resource
                         ->disk(config('sortable-gallery.media_library.disk_name'))
                         ->collection('gallery_images')
                         ->visibility('public')
+                        ->conversion('preview')
                         ->columnSpan(2),
                     Fieldset::make('Image Tags')
                         ->schema(GalleryImageResource::generateTagForms())

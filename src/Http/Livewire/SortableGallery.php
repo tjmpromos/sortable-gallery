@@ -17,8 +17,18 @@ class SortableGallery extends Component
     use WithPagination;
 
     public $filters = [];
+    public $currentType;
 
     public $imageIds = []; // array of image ids used to target watcher for resetting BaguetteBox
+
+    public function getGalleryIdAttribute()
+    {
+        return 'gallery_' . $this->id;
+    }
+
+    public function setType($currentType) {
+        $this->currentType = $currentType;
+    }
 
     public function getFilterTypesProperty()
     {
@@ -34,7 +44,7 @@ class SortableGallery extends Component
     {
         if (count($this->filters) > 0) {
             $images = GalleryImage::active()
-                ->withAnyTagsOfAnyType($this->filters)
+                ->withAnyTags($this->filters, $this->currentType)
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         } else {
@@ -43,7 +53,11 @@ class SortableGallery extends Component
                 ->paginate(config('website.misc.gallery_pagination'));
         }
 
-        $this->imageIds = $images->pluck('id')->toArray();
+//        $this->imageIds = $images->pluck('gallery_id','id')->toArray();
+        $this->imageIds = collect();
+        $images->each(function ($item, $key) {
+            $this->imageIds->push('gallery_' . $item->id);
+        });
 
         return $images;
     }

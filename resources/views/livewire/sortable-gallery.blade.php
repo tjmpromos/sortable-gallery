@@ -136,12 +136,12 @@
                                         <div class="space-y-3 pt-6">
                                             @foreach ($filter as $tag)
                                                 <div class="flex items-center">
-                                                    <input id="{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
+                                                    <input id="{{ str($key) }}-{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
                                                         name="filter[]" wire:model="filters"
                                                         value="{{ $tag }}" type="checkbox"
                                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                         @checked(collect($filters)->contains($tag))>
-                                                    <label for="{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
+                                                    <label for="{{ str($key) }}-{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
                                                         class="ml-3 text-sm text-gray-600 cursor-pointer">{{ $tag }}</label>
                                                 </div>
                                             @endforeach
@@ -183,11 +183,7 @@
                                                         data-caption="{{ $galleryImage->name }}"
                                                         class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
-                                                            {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
-                                                                    'alt' => $galleryImage->name,
-                                                                    'class' => 'mx-auto rounded-md object-cover overflow-hidden',
-                                                                    'loading' => 'lazy',
-                                                                ]) }}
+                                                            {{ $galleryImage->getFirstMedia('gallery_images') }}
                                                         </div>
                                                         <div class="col-span-3 text-center">
                                                             <figcaption class="sr-only px-3 text-sm">

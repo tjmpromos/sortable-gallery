@@ -17,16 +17,18 @@ class SortableGallery extends Component
     use WithPagination;
 
     public $filters = [];
+
     public $currentType;
 
     public $imageIds = []; // array of image ids used to target watcher for resetting BaguetteBox
 
     public function getGalleryIdAttribute()
     {
-        return 'gallery_' . $this->id;
+        return 'gallery_'.$this->id;
     }
 
-    public function setType($currentType) {
+    public function setType($currentType)
+    {
         $this->currentType = $currentType;
     }
 
@@ -56,7 +58,7 @@ class SortableGallery extends Component
 //        $this->imageIds = $images->pluck('gallery_id','id')->toArray();
         $this->imageIds = collect();
         $images->each(function ($item, $key) {
-            $this->imageIds->push('gallery_' . $item->id);
+            $this->imageIds->push('gallery_'.$item->id);
         });
 
         return $images;

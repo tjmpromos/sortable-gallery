@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Tags\Tag;
@@ -20,10 +21,18 @@ class SortableGallery extends Component
 
     public $imageIds = []; // array of image ids used to target watcher for resetting BaguetteBox
 
+    public function getGalleryIdAttribute()
+    {
+        return 'gallery_' . $this->id;
+    }
+
     public function getFilterTypesProperty()
     {
         return Cache::remember(md5('tjm_sortable_gallery_image_tags'), 60, function () {
-            return collect(config('sortable-gallery.tag_types'))
+            $tagTypes = collect(config('sortable-gallery.tag_types'))->transform(function ($item, $key) {
+                return Str::snake($item);
+            });
+            return $tagTypes
                 ->mapWithKeys(fn ($tagType) => [$tagType => Tag::getWithType($tagType)->pluck('name', 'id')->sort()])
                 ->filter(fn ($val) => $val->count() > 0)
                 ->all();
@@ -32,9 +41,17 @@ class SortableGallery extends Component
 
     public function queryGalleryImages(): LengthAwarePaginator|array
     {
+        $filterss = $this->filters;
+        $filterss = collect($filterss)->transform(function ($item, $key) {
+            $tagType = Str::before($item, '|||');
+            $actualTag = Str::after($item, '|||');
+            return [$tagType => $actualTag];
+        });
+//        $this->filters = $filterss->toArray();
+        ray($filterss->toArray());
         if (count($this->filters) > 0) {
             $images = GalleryImage::active()
-                ->withAnyTagsOfAnyType($this->filters)
+                ->withAnyTags($this->filters)
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         } else {
@@ -43,7 +60,11 @@ class SortableGallery extends Component
                 ->paginate(config('website.misc.gallery_pagination'));
         }
 
-        $this->imageIds = $images->pluck('id')->toArray();
+//        $this->imageIds = $images->pluck('gallery_id','id')->toArray();
+        $this->imageIds = collect();
+        $images->each(function ($item, $key) {
+            $this->imageIds->push('gallery_' . $item->id);
+        });
 
         return $images;
     }

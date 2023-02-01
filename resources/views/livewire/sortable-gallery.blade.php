@@ -1,15 +1,20 @@
-<div x-data="{ menu: false,
-    imageIds: @entangle('imageIds'),
-    init() {
-        this.initBaguetteBox();
-        $watch('imageIds', () => {
-            this.initBaguetteBox();
-        })
-    },
-    initBaguetteBox() {
-        baguetteBox.run('.gallery');
-    }
-}" x-on:keydown.escape.window="menu = false">
+<div x-data="{
+        menu: false,
+        imageIds: @entangle('imageIds'),
+        init() {
+            $watch('imageIds', () => {
+                this.sortableGallery.refresh();
+            })
+        },
+        sortableGallery: lightGallery(document.getElementById('lightgallery'), {
+            plugins: [lgThumbnail],
+            licenseKey: '0000-0000-000-0000',
+            speed: 750,
+        }),
+    }"
+    x-on:keydown.escape.window="menu = false"
+    wire:ignore.self
+>
     <div>
         {{-- Mobile filter dialog --}}
         <div x-show="menu" x-transition:enter="transition-opacity ease-linear duration-300"
@@ -80,12 +85,13 @@
 
                                                 @foreach ($filter as $tag)
                                                     <div class="flex items-center">
-                                                        <input id="{{ str($tag)->slug() }}-mobile" name="filter[]"
-                                                            wire:model="filters" value="{{ $tag }}"
+                                                        <input id="{{ str($key)->snake() }}-{{ str($tag)->slug() }}-mobile" name="filter[]"
+                                                            wire:model="filters" value="{{ str($key)->snake() }}-{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
                                                             type="checkbox"
                                                             class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                            @checked(collect($filters)->contains($tag))>
-                                                        <label for="{{ str($tag)->slug() }}-mobile"
+{{--                                                            @checked(collect($filters)->contains($tag))--}}
+                                                        >
+                                                        <label for="{{ str($key)->snake() }}-{{ str($tag)->slug() }}-mobile"
                                                             class="ml-3 text-sm text-gray-500">{{ $tag }}</label>
                                                     </div>
                                                 @endforeach
@@ -136,12 +142,15 @@
                                         <div class="space-y-3 pt-6">
                                             @foreach ($filter as $tag)
                                                 <div class="flex items-center">
-                                                    <input id="{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
+{{--                                                    @ray(collect($filters))--}}
+                                                    <input id="{{ str($key)->snake() }}-{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
                                                         name="filter[]" wire:model="filters"
-                                                        value="{{ $tag }}" type="checkbox"
+                                                        value="{{ str($key) }}|||{{ $tag }}"
+                                                        type="checkbox"
                                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                                        @checked(collect($filters)->contains($tag))>
-                                                    <label for="{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
+                                                        @checked(collect($filters)->contains($tag))
+                                                    >
+                                                    <label for="{{ str($key)->snake() }}-{{ str($tag)->slug() }}-{{ $loop->parent->index }}"
                                                         class="ml-3 text-sm text-gray-600 cursor-pointer">{{ $tag }}</label>
                                                 </div>
                                             @endforeach
@@ -157,7 +166,7 @@
                 {{-- Image grid --}}
                 <div class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
 
-                    <div class="lg:h-full">
+                    <div class="rounded-lg border-4 border-dashed border-gray-200 bg-white lg:h-full">
 
                         <div class="">
                             <div class="mx-auto max-w-2xl px-4 lg:max-w-7xl">
@@ -172,15 +181,14 @@
                                 </div>
 
                                 <div
-                                    class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                                    id="lightgallery" class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
 
                                     @foreach ($galleryImages as $galleryImage)
                                         @if ($galleryImage->hasMedia('gallery_images'))
-                                            <div class="group relative" wire:key="{{ $galleryImage->id }}">
+                                            <div data-src="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}" class="group relative cursor-pointer gallery_{{ $galleryImage->id }}" wire:key="gallery_{{ $galleryImage->id }}">
                                                 <figure
                                                     class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md shadow group-hover:opacity-75">
-                                                    <a href="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}"
-                                                        data-caption="{{ $galleryImage->name }}"
+                                                    <div data-caption="{{ $galleryImage->name }}"
                                                         class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
                                                             {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
@@ -193,7 +201,7 @@
                                                             <figcaption class="sr-only px-3 text-sm">
                                                                 {{ $galleryImage->name }}</figcaption>
                                                         </div>
-                                                    </a>
+                                                    </div>
                                                 </figure>
                                             </div>
                                         @endif
@@ -227,11 +235,12 @@
 @endpush
 
 @push('head-styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css"
-        integrity="sha256-cLMYWYYutHkt+KpNqjg7NVkYSQ+E2VbrXsEvOqU7mL0=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css" integrity="sha512-F2E+YYE1gkt0T5TVajAslgDfTEUQKtlu4ralVq78ViNxhKXQLrgQLLie8u1tVdG2vWnB3ute4hcdbiBtvJQh0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-thumbnail.min.css" integrity="sha512-GRxDpj/bx6/I4y6h2LE5rbGaqRcbTu4dYhaTewlS8Nh9hm/akYprvOTZD7GR+FRCALiKfe8u1gjvWEEGEtoR6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-transitions.min.css" integrity="sha512-lm04w74LemGhpRPg5018iANiFRlA4Dxhrh8jxH8LQtq/EAXG+MdkbVv7aEXPpN+d6D/72M5xNTjhCQ4lPxg7vA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endpush
 
 @push('footer-scripts')
-<script src="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js"
-    integrity="sha256-ULQV01VS9LCI2ePpLsmka+W0mawFpEA0rtxnezUj4A4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js" integrity="sha512-dSI4QnNeaXiNEjX2N8bkb16B7aMu/8SI5/rE6NIa3Hr/HnWUO+EAZpizN2JQJrXuvU7z0HTgpBVk/sfGd0oW+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/plugins/thumbnail/lg-thumbnail.min.js" integrity="sha512-Jx+orEb1KJtJ6Ajfshhr7is0zqgUC7H9ylk76KMtB9Ea2WAf/Muyzpe9zvBAYQQQKdAbj+rNYEorsRQLsmRafA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @endpush

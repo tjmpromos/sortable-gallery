@@ -23,7 +23,7 @@ class SortableGallery extends Component
 
     public function getGalleryIdAttribute()
     {
-        return 'gallery_' . $this->id;
+        return 'gallery_'.$this->id;
     }
 
     public function getFilterTypesProperty()
@@ -32,6 +32,7 @@ class SortableGallery extends Component
             $tagTypes = collect(config('sortable-gallery.tag_types'))->transform(function ($item, $key) {
                 return Str::snake($item);
             });
+
             return $tagTypes
                 ->mapWithKeys(fn ($tagType) => [$tagType => Tag::getWithType($tagType)->pluck('name', 'id')->sort()])
                 ->filter(fn ($val) => $val->count() > 0)
@@ -45,6 +46,7 @@ class SortableGallery extends Component
         $filterss = collect($filterss)->transform(function ($item, $key) {
             $tagType = Str::before($item, '|||');
             $actualTag = Str::after($item, '|||');
+
             return [$tagType => $actualTag];
         });
 //        $this->filters = $filterss->toArray();
@@ -63,7 +65,7 @@ class SortableGallery extends Component
 //        $this->imageIds = $images->pluck('gallery_id','id')->toArray();
         $this->imageIds = collect();
         $images->each(function ($item, $key) {
-            $this->imageIds->push('gallery_' . $item->id);
+            $this->imageIds->push('gallery_'.$item->id);
         });
 
         return $images;

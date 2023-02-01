@@ -56,7 +56,7 @@ Once you are logged in, you will see Gallery Images on the left hand side and yo
 If you are currently using Filament or have a media table, you may run into conflicts while migrating. To help alleviate this issue, we've provided some publishable migrations. You can export them to your `database/migrations` directory by running:
 
 ``` bash
-php artisan vendor:publish --tag=sortable-gallery.migrations
+php artisan vendor:publish --tag=sortable-gallery-migrations
 ```
 
 ### Installing TailwindCSS

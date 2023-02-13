@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Tags\Tag;
@@ -18,8 +19,6 @@ class SortableGallery extends Component
 
     public $filters = [];
 
-    public $currentType;
-
     public $imageIds = []; // array of image ids used to target watcher for resetting BaguetteBox
 
     public function getGalleryIdAttribute()
@@ -27,15 +26,14 @@ class SortableGallery extends Component
         return 'gallery_'.$this->id;
     }
 
-    public function setType($currentType)
-    {
-        $this->currentType = $currentType;
-    }
-
     public function getFilterTypesProperty()
     {
         return Cache::remember(md5('tjm_sortable_gallery_image_tags'), 60, function () {
-            return collect(config('sortable-gallery.tag_types'))
+            $tagTypes = collect(config('sortable-gallery.tag_types'))->transform(function ($item, $key) {
+                return Str::snake($item);
+            });
+
+            return $tagTypes
                 ->mapWithKeys(fn ($tagType) => [$tagType => Tag::getWithType($tagType)->pluck('name', 'id')->sort()])
                 ->filter(fn ($val) => $val->count() > 0)
                 ->all();
@@ -44,9 +42,18 @@ class SortableGallery extends Component
 
     public function queryGalleryImages(): LengthAwarePaginator|array
     {
+        $filterss = $this->filters;
+        $filterss = collect($filterss)->transform(function ($item, $key) {
+            $tagType = Str::before($item, '|||');
+            $actualTag = Str::after($item, '|||');
+
+            return [$tagType => $actualTag];
+        });
+//        $this->filters = $filterss->toArray();
+        ray($filterss->toArray());
         if (count($this->filters) > 0) {
             $images = GalleryImage::active()
-                ->withAnyTags($this->filters, $this->currentType)
+                ->withAnyTags($this->filters)
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         } else {

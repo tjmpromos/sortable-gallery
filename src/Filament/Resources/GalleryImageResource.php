@@ -37,7 +37,7 @@ class GalleryImageResource extends Resource
                         ->required()
                         ->rules('required', 'max:255')
                         ->columnSpan(4),
-                    Toggle::make('is_active')
+                    Toggle::make('active')
                         ->default(true)
                         ->columnSpan(1)
                         ->inline(false),

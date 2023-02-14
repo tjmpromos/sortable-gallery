@@ -2,22 +2,19 @@
         menu: false,
         imageIds: @entangle('imageIds'),
         init() {
+            this.initBaguetteBox();
             $watch('imageIds', () => {
-                this.sortableGallery.refresh();
+                this.initBaguetteBox();
             })
         },
-        sortableGallery: lightGallery(document.getElementById('lightGallery'), {
-            plugins: [lgThumbnail],
-            licenseKey: '0000-0000-000-0000',
-            speed: 750,
-            download: false
-        })
+        initBaguetteBox() {
+            baguetteBox.run('#sortableGallery');
+        }
     }"
      x-on:keydown.escape.window="menu = false"
      wire:ignore.self
 >
     <div>
-        @json($this->selectedFilters)
         {{-- Mobile filter dialog --}}
         <div x-show="menu" x-transition:enter="transition-opacity ease-linear duration-300"
              x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -187,16 +184,16 @@
                                 </div>
 
                                 <div
-                                    id="lightGallery"
+                                    id="sortableGallery"
                                     class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                                     @foreach ($galleryImages as $galleryImage)
                                         @if ($galleryImage->hasMedia('gallery_images'))
-                                            <div data-src="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}"
-                                                 class="group relative cursor-pointer gallery_{{ $galleryImage->id }}"
+                                            <div class="group relative cursor-pointer gallery_{{ $galleryImage->id }}"
                                                  wire:key="gallery_{{ $galleryImage->id }}">
                                                 <figure
                                                     class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md shadow group-hover:opacity-75">
-                                                    <div data-caption="{{ $galleryImage->name }}"
+                                                    <a href="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}"
+                                                        data-caption="{{ $galleryImage->name }}"
                                                          class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
                                                             {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
@@ -207,9 +204,10 @@
                                                         </div>
                                                         <div class="col-span-3 text-center">
                                                             <figcaption class="sr-only px-3 text-sm">
-                                                                {{ $galleryImage->name }}</figcaption>
+                                                                {{ $galleryImage->name }}
+                                                            </figcaption>
                                                         </div>
-                                                    </div>
+                                                    </a>
                                                 </figure>
                                             </div>
                                         @endif
@@ -243,22 +241,11 @@
 @endpush
 
 @push('head-styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery.min.css"
-          integrity="sha512-F2E+YYE1gkt0T5TVajAslgDfTEUQKtlu4ralVq78ViNxhKXQLrgQLLie8u1tVdG2vWnB3ute4hcdbiBtvJQh0g=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-thumbnail.min.css"
-          integrity="sha512-GRxDpj/bx6/I4y6h2LE5rbGaqRcbTu4dYhaTewlS8Nh9hm/akYprvOTZD7GR+FRCALiKfe8u1gjvWEEGEtoR6g=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-transitions.min.css"
-          integrity="sha512-lm04w74LemGhpRPg5018iANiFRlA4Dxhrh8jxH8LQtq/EAXG+MdkbVv7aEXPpN+d6D/72M5xNTjhCQ4lPxg7vA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css"
+        integrity="sha256-cLMYWYYutHkt+KpNqjg7NVkYSQ+E2VbrXsEvOqU7mL0=" crossorigin="anonymous">
 @endpush
 
 @push('footer-scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js"
-            integrity="sha512-dSI4QnNeaXiNEjX2N8bkb16B7aMu/8SI5/rE6NIa3Hr/HnWUO+EAZpizN2JQJrXuvU7z0HTgpBVk/sfGd0oW+w=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/plugins/thumbnail/lg-thumbnail.min.js"
-            integrity="sha512-Jx+orEb1KJtJ6Ajfshhr7is0zqgUC7H9ylk76KMtB9Ea2WAf/Muyzpe9zvBAYQQQKdAbj+rNYEorsRQLsmRafA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js"
+    integrity="sha256-ULQV01VS9LCI2ePpLsmka+W0mawFpEA0rtxnezUj4A4=" crossorigin="anonymous"></script>
 @endpush

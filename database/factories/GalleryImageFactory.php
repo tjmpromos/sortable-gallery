@@ -18,7 +18,7 @@ class GalleryImageFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'is_active' => fake()->boolean(),
+            'active' => fake()->boolean(),
         ];
     }
 }

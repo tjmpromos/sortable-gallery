@@ -56,7 +56,7 @@ Once you are logged in, you will see Gallery Images on the left hand side and yo
 If you are currently using Filament or have a media table, you may run into conflicts while migrating. To help alleviate this issue, we've provided some publishable migrations. You can export them to your `database/migrations` directory by running:
 
 ``` bash
-php artisan vendor:publish --tag=sortable-gallery.migrations
+php artisan vendor:publish --tag=sortable-gallery-migrations
 ```
 
 ### Installing TailwindCSS
@@ -88,14 +88,11 @@ This can be any number of tag types (think of them like categories) that you wis
 This allows you to set the image preview size for displaying on the front end.
 
 ### Publishing and Editing the Livewire Component
+We use [BaguetteBox.js](https://feimosi.github.io/baguetteBox.js/) for our lightbox and tried to make the UI as non-intrusive as possible, but you are welcome to use whatever you'd like. You can publish the views and edit the `resources/vendor/sortable-gallery/livewire` view to use whatever you'd like.
 
 ``` bash
 php artisan vendor:publish --tag=sortable-gallery-views
 ```
-
-We've tried to make the UI as standard and non-intrusive as possible, but you'll likely want to make some edits to the styling. This command will publish the livewire component into `resources/vendor/sortable-gallery/livewire` in your project.
-
-
 
 ## Testing
 

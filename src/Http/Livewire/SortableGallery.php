@@ -5,45 +5,53 @@ namespace Tjmpromos\SortableGallery\Http\Livewire;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection as DBCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Tags\Tag;
 use Tjmpromos\SortableGallery\Models\GalleryImage;
+use Tjmpromos\SortableGallery\Models\GalleryTag;
 
 class SortableGallery extends Component
 {
     use WithPagination;
 
-    public $filters = [];
+    public $selectedFilters = [];
 
     public $imageIds = []; // array of image ids used to target watcher for resetting BaguetteBox
 
-    public function getFilterTypesProperty()
+    public function getGalleryIdAttribute(): string
     {
-        return Cache::remember(md5('tjm_sortable_gallery_image_tags'), 60, function () {
-            return collect(config('sortable-gallery.tag_types'))
-                ->mapWithKeys(fn ($tagType) => [$tagType => Tag::getWithType($tagType)->pluck('name', 'id')->sort()])
-                ->filter(fn ($val) => $val->count() > 0)
-                ->all();
+        return 'gallery_'.$this->id;
+    }
+
+    public function getFiltersProperty(): DBCollection
+    {
+        return Cache::remember(md5('tjm_sortable_gallery_filters'), 60, function () {
+            return GalleryTag::getTagsWithTypes(config('sortable-gallery.tag_types'));
         });
     }
 
     public function queryGalleryImages(): LengthAwarePaginator|array
     {
-        if (count($this->filters) > 0) {
-            $images = GalleryImage::active()
-                ->withAnyTagsOfAnyType($this->filters)
+        if (count($this->selectedFilters) > 0) {
+            $images = GalleryImage::query()
+                ->active()
+                ->withSelectedFilters($this->selectedFilters)
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         } else {
-            $images = GalleryImage::active()
+            $images = GalleryImage::query()
+                ->active()
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('website.misc.gallery_pagination'));
         }
 
-        $this->imageIds = $images->pluck('id')->toArray();
+        // set image ids for alpinejs watcher
+        $this->imageIds = $images->pluck('id')->map(function ($id) {
+            return 'gallery_'.$id;
+        });
 
         return $images;
     }
@@ -55,13 +63,13 @@ class SortableGallery extends Component
 
     public function clearFilters()
     {
-        $this->reset('filters');
+        $this->reset('selectedFilters');
         $this->resetPage();
     }
 
     public function removeFilter($filterTag)
     {
-        $this->filters = array_diff($this->filters, [$filterTag]);
+        $this->selectedFilters = array_diff($this->selectedFilters, [$filterTag]);
         $this->resetPage();
     }
 

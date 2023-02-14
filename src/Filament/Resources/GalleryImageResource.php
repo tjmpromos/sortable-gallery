@@ -37,7 +37,7 @@ class GalleryImageResource extends Resource
                         ->required()
                         ->rules('required', 'max:255')
                         ->columnSpan(4),
-                    Toggle::make('is_active')
+                    Toggle::make('active')
                         ->default(true)
                         ->columnSpan(1)
                         ->inline(false),
@@ -45,6 +45,7 @@ class GalleryImageResource extends Resource
                         ->disk(config('sortable-gallery.media_library.disk_name'))
                         ->collection('gallery_images')
                         ->visibility('public')
+                        ->conversion('preview')
                         ->columnSpan(2),
                     Fieldset::make('Image Tags')
                         ->schema(GalleryImageResource::generateTagForms())

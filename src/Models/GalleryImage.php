@@ -69,8 +69,33 @@ class GalleryImage extends Model implements HasMedia
      * @param  Builder  $query
      * @return void
      */
-    public function scopeActive($query): void
+    public function scopeActive(Builder $query): void
     {
         $query->where('active', 1);
+    }
+
+    public function scopeWithSelectedFilters(Builder $query, array $filters): void
+    {
+        $tagIds = [];
+
+        $tags = collect($filters)
+            ->map(function ($value) {
+                [$type, $tag] = explode('|', $value);
+
+                return compact('type', 'tag');
+            })
+            ->groupBy('type')
+            ->map->pluck('tag')
+            ->each(function ($tagNames, $tagType) use (&$tagIds) {
+                $tagIds[$tagType] = static::convertToTags($tagNames, $tagType)
+                    ->pluck('id')
+                    ->toArray();
+            });
+
+        $tagIds = collect($tagIds)->flatten()->toArray();
+
+        $query->whereHas('tags', function (Builder $query) use ($tagIds) {
+            $query->whereIn('tags.id', $tagIds);
+        });
     }
 }

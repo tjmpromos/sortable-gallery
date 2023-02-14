@@ -2,6 +2,10 @@
 
 All notable changes to `sortable-gallery` will be documented in this file.
 
+## v.1.0.3 - 2023-02-14
+
+Fix pagination reset on filter change
+
 ## v.1.0.2 - 2023-02-14
 
 Bump dependencies to support Laravel 10

@@ -17,6 +17,7 @@
      wire:ignore.self
 >
     <div>
+        @json($this->selectedFilters)
         {{-- Mobile filter dialog --}}
         <div x-show="menu" x-transition:enter="transition-opacity ease-linear duration-300"
              x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -48,7 +49,7 @@
 
                     {{-- Filters --}}
                     <form x-data="{ active: 1 }" class="mt-4">
-                        @foreach ($this->filters as $key => $filter)
+                        @foreach ($this->filters as $key => $filters)
                             <div class="border-t border-gray-200 pt-4 pb-4" x-data="{
                                 id: {{ $loop->iteration }},
                                 get expanded() {
@@ -82,7 +83,7 @@
                                     <div x-show="expanded" x-collapse>
                                         <div class="px-4 pt-4 pb-2" id="filter-section-{{ $loop->index }}">
                                             <div class="space-y-6">
-                                                @foreach ($filter as $tag)
+                                                @foreach ($filters as $tag)
                                                     <div class="flex items-center">
                                                         <input
                                                             id="{{ str(implode('-', [$key, $tag->name, $loop->parent->index, 'mobile']))->slug() }}"
@@ -94,7 +95,7 @@
                                                         >
                                                         <label
                                                             for="{{ str(implode('-', [$key, $tag->name, $loop->parent->index, 'mobile']))->slug() }}"
-                                                            class="ml-3 text-sm text-gray-500">{{ $tag->name }}</label>
+                                                            class="ml-3 text-sm text-gray-500">{{ str($tag->name)->title() }}</label>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -136,26 +137,27 @@
                     <div class="hidden lg:block">
 
                         <form class="space-y-10 divide-y divide-gray-200">
-                            @foreach ($this->filters as $key => $filter)
+                            @foreach ($this->filters as $key => $filters)
                                 <div @class(['pt-10' => $loop->index > 0])>
                                     <fieldset>
                                         <legend class="w-full px-2 font-semibold">
                                             {{ str($key)->title() }}
                                         </legend>
                                         <div class="space-y-3 pt-6">
-                                            @foreach ($filter as $tag)
+                                            @foreach ($filters as $tag)
                                                 <div class="flex items-center">
                                                     {{--                                                    @ray(collect(selectedFilters))--}}
                                                     <input
                                                         id="{{ str(implode('-', [$key, $tag->name, $loop->parent->index]))->slug() }}"
-                                                        name="filter[]" wire:model="selectedFilters"
+                                                        name="filter[]"
+                                                        wire:model="selectedFilters"
                                                         value="{{ $key }}|{{ $tag->name }}"
                                                         type="checkbox"
                                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                     >
                                                     <label
                                                         for="{{ str(implode('-', [$key, $tag->name, $loop->parent->index]))->slug() }}"
-                                                        class="ml-3 text-sm text-gray-600 cursor-pointer">{{ $tag->name }}</label>
+                                                        class="ml-3 text-sm text-gray-600 cursor-pointer">{{ str($tag->name)->title() }}</label>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -187,7 +189,6 @@
                                 <div
                                     id="lightGallery"
                                     class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-
                                     @foreach ($galleryImages as $galleryImage)
                                         @if ($galleryImage->hasMedia('gallery_images'))
                                             <div data-src="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}"

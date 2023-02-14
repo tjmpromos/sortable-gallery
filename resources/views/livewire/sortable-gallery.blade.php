@@ -6,12 +6,12 @@
                 this.sortableGallery.refresh();
             })
         },
-        sortableGallery: lightGallery(document.getElementById('lightgallery'), {
+        sortableGallery: lightGallery(document.getElementById('lightGallery'), {
             plugins: [lgThumbnail],
             licenseKey: '0000-0000-000-0000',
             speed: 750,
-            download: false,
-        }),
+            download: false
+        })
     }"
      x-on:keydown.escape.window="menu = false"
      wire:ignore.self
@@ -185,7 +185,7 @@
                                 </div>
 
                                 <div
-                                    id="lightgallery"
+                                    id="lightGallery"
                                     class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
 
                                     @foreach ($galleryImages as $galleryImage)

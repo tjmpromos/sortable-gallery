@@ -2,6 +2,10 @@
 
 All notable changes to `sortable-gallery` will be documented in this file.
 
+## v1.0.4 - 2023-02-15
+
+Fix incorrect name for publishable migration
+
 ## v.1.0.3 - 2023-02-14
 
 Fix pagination reset on filter change

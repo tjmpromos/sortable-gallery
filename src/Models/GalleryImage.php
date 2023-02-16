@@ -26,8 +26,6 @@ class GalleryImage extends Model implements HasMedia
 
     /**
      * Register the media collections.
-     *
-     * @return void
      */
     public function registerMediaCollections(): void
     {
@@ -39,8 +37,6 @@ class GalleryImage extends Model implements HasMedia
     /**
      * Register the media conversions.
      *
-     * @param  Media|null  $media
-     * @return void
      *
      * @throws InvalidManipulation
      */
@@ -65,9 +61,6 @@ class GalleryImage extends Model implements HasMedia
 
     /**
      * Scope a query to only include active users.
-     *
-     * @param  Builder  $query
-     * @return void
      */
     public function scopeActive(Builder $query): void
     {

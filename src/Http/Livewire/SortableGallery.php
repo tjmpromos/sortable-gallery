@@ -73,9 +73,6 @@ class SortableGallery extends Component
         $this->resetPage();
     }
 
-    /**
-     * @return View|Factory|Application
-     */
     public function render(): View|Factory|Application
     {
         return view('sortable-gallery::livewire.sortable-gallery', [

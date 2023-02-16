@@ -11,9 +11,6 @@ class GalleryTag extends Tag
 
     /**
      * Return a collection of tags grouped by type
-     *
-     * @param  array  $types
-     * @return DbCollection
      */
     public static function getTagsWithTypes(array $types): DbCollection
     {

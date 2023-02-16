@@ -56,7 +56,7 @@ class SortableGallery extends Component
         return $images;
     }
 
-    public function updatingFilters()
+    public function updatingSelectedFilters()
     {
         $this->resetPage();
     }

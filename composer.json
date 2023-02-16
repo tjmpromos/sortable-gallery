@@ -26,8 +26,8 @@
     ],
     "require": {
         "php": "^8.1",
-        "illuminate/contracts": "^9.0",
-        "illuminate/support": ">=9",
+        "illuminate/contracts": "^9.0|^10.0",
+        "illuminate/support": "^9.0|^10.0",
         "filament/filament": "^2.16",
         "spatie/laravel-tags": "^4.3",
         "spatie/laravel-medialibrary": "^10.5",

@@ -183,9 +183,7 @@
                                     @endif
                                 </div>
 
-                                <div
-                                    id="sortableGallery"
-                                    class="gallery grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
+                                <div id="sortableGallery" class="gallery grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
                                     @foreach ($galleryImages as $galleryImage)
                                         @if ($galleryImage->hasMedia('gallery_images'))
                                             <div class="group relative cursor-pointer gallery_{{ $galleryImage->id }}"

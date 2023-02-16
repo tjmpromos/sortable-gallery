@@ -115,7 +115,7 @@
 
         <main class="mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 
-            <div class="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+            <div class="pt-12 lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 <aside>
                     <h2 class="sr-only">Filters</h2>
 
@@ -167,12 +167,12 @@
                 </aside>
 
                 {{-- Image grid --}}
-                <div class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
+                <div class="lg:col-span-2 lg:mt-0 xl:col-span-3">
 
-                    <div class="rounded-lg border-4 border-dashed border-gray-200 bg-white lg:h-full">
+                    <div class="rounded-lg border-4 border-dashed border-gray-200 bg-white lg:h-full p-6 xl:p-8">
 
                         <div class="">
-                            <div class="mx-auto max-w-2xl px-4 lg:max-w-7xl">
+                            <div class="mx-auto max-w-2xl lg:max-w-7xl">
 
                                 <div class="min-h-12 flex justify-end">
                                     @if (count($selectedFilters) > 0)
@@ -185,7 +185,7 @@
 
                                 <div
                                     id="sortableGallery"
-                                    class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                                    class="gallery grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8">
                                     @foreach ($galleryImages as $galleryImage)
                                         @if ($galleryImage->hasMedia('gallery_images'))
                                             <div class="group relative cursor-pointer gallery_{{ $galleryImage->id }}"
@@ -218,7 +218,7 @@
                             </div>
                         </div>
 
-                        <div class="mx-auto mt-12 px-8">
+                        <div class="mx-auto mt-8">
                             {{ $galleryImages->links() }}
                         </div>
 

@@ -115,7 +115,7 @@
 
         <main class="mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 
-            <div class="pt-12 lg:grid lg:grid-cols-3 lg:gap-x-8 xl:grid-cols-4">
+            <div class="pt-12 lg:grid lg:grid-cols-3 gap-x-8 xl:grid-cols-4">
                 <aside>
                     <h2 class="sr-only">Filters</h2>
 
@@ -167,7 +167,7 @@
                 </aside>
 
                 {{-- Image grid --}}
-                <div class="mt-6 lg:col-span-2 lg:mt-0 xl:col-span-3">
+                <div class="lg:col-span-2 lg:mt-0 xl:col-span-3">
 
                     <div class="rounded-lg border-4 border-dashed border-gray-200 bg-white lg:h-full">
 
@@ -191,14 +191,14 @@
                                             <div class="group relative cursor-pointer gallery_{{ $galleryImage->id }}"
                                                  wire:key="gallery_{{ $galleryImage->id }}">
                                                 <figure
-                                                    class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md shadow group-hover:opacity-75">
+                                                    class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md group-hover:opacity-75">
                                                     <a href="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}"
                                                         data-caption="{{ $galleryImage->name }}"
                                                          class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
                                                             {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
                                                                     'alt' => $galleryImage->name,
-                                                                    'class' => 'mx-auto rounded-md object-cover overflow-hidden',
+                                                                    'class' => 'mx-auto rounded-md object-cover overflow-hidden shadow',
                                                                     'loading' => 'lazy',
                                                                 ]) }}
                                                         </div>

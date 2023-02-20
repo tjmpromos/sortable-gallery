@@ -5,8 +5,8 @@
 # Sortable Gallery for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tjmpromos/sortable-gallery.svg?style=flat-square)](https://packagist.org/packages/tjmpromos/sortable-gallery)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/tjmpromos/sortable-gallery/run-tests?label=tests)](https://github.com/tjmpromos/sortable-gallery/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/tjmpromos/sortable-gallery/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/tjmpromos/sortable-gallery/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tjmpromos/sortable-gallery/run-tests.yml?label=tests&style=flat-square)](https://github.com/tjmpromos/sortable-gallery/actions/workflows/run-tests.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/tjmpromos/sortable-gallery/fix-php-code-style-issues.yml?label=code%20style&style=flat-square)](https://github.com/tjmpromos/sortable-gallery/actions/workflows/fix-php-code-style-issues.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/tjmpromos/sortable-gallery.svg?style=flat-square)](https://packagist.org/packages/tjmpromos/sortable-gallery)
 
 This is a quickly installable, sortable gallery for Laravel applications. Under the hood, it utilizes [Filament](https://filamentphp.com/docs/2.x/) for managing assets. We default to using [Livewire](https://laravel-livewire.com/docs/2.x/quickstart) and [Alpine.js](https://alpinejs.dev/start-here) for interactions and [TailwindCSS](https://tailwindcss.com/docs/installation) for styling, but you are welcome to publish the views and change the front end to whatever you desire.
@@ -14,18 +14,18 @@ This is a quickly installable, sortable gallery for Laravel applications. Under 
 ## Prerequisites
 Ths package uses the following packages and are required to be installed and configured before installing sortable-gallery:
 
-[Filament](https://filamentphp.com/docs/2.x/admin/installation)
-[Spatie Media Library](https://docs.spatie.be/laravel-medialibrary/v9/introduction/)
-[Filament Media Library](https://filamentphp.com/docs/2.x/media-library/installation)
-[Spatie Tags](https://docs.spatie.be/laravel-tags/v3/introduction/)
-[Filament Spatie Tags](https://filamentphp.com/docs/2.x/tags/installation)
-[Livewire](https://laravel-livewire.com/docs/2.x/quickstart)
+- [Filament](https://filamentphp.com/docs/2.x/admin/installation)
+- [Spatie Media Library](https://docs.spatie.be/laravel-medialibrary/v9/introduction/)
+- [Filament Media Library](https://filamentphp.com/docs/2.x/media-library/installation)
+- [Spatie Tags](https://docs.spatie.be/laravel-tags/v3/introduction/)
+- [Filament Spatie Tags](https://filamentphp.com/docs/2.x/tags/installation)
+- [Livewire](https://laravel-livewire.com/docs/2.x/quickstart)
 
 ## Optional
 These packages are not required, but are used by default for styling and interactions in the view. Feel free to roll your own styling and interactions if you wish.
 
-[Alpine.js](https://alpinejs.dev/start-here)
-[TailwindCSS](https://tailwindcss.com/docs/installation)
+- [Alpine.js](https://alpinejs.dev/start-here)
+- [TailwindCSS](https://tailwindcss.com/docs/installation)
 
 ## Installation
 

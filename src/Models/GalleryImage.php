@@ -71,6 +71,7 @@ class GalleryImage extends Model implements HasMedia
     {
         $tagIds = [];
 
+        // TODO: Refactor this to filter out to use tags selected
         $tags = collect($filters)
             ->map(function ($value) {
                 [$type, $tag] = explode('|', $value);

@@ -11,6 +11,22 @@
 
 This is a quickly installable, sortable gallery for Laravel applications. Under the hood, it utilizes [Filament](https://filamentphp.com/docs/2.x/) for managing assets. We default to using [Livewire](https://laravel-livewire.com/docs/2.x/quickstart) and [Alpine.js](https://alpinejs.dev/start-here) for interactions and [TailwindCSS](https://tailwindcss.com/docs/installation) for styling, but you are welcome to publish the views and change the front end to whatever you desire.
 
+## Prerequisites
+Ths package uses the following packages and are required to be installed and configured before installing sortable-gallery:
+
+[Filament](https://filamentphp.com/docs/2.x/admin/installation)
+[Spatie Media Library](https://docs.spatie.be/laravel-medialibrary/v9/introduction/)
+[Filament Media Library](https://filamentphp.com/docs/2.x/media-library/installation)
+[Spatie Tags](https://docs.spatie.be/laravel-tags/v3/introduction/)
+[Filament Spatie Tags](https://filamentphp.com/docs/2.x/tags/installation)
+[Livewire](https://laravel-livewire.com/docs/2.x/quickstart)
+
+## Optional
+These packages are not required, but are used by default for styling and interactions in the view. Feel free to roll your own styling and interactions if you wish.
+
+[Alpine.js](https://alpinejs.dev/start-here)
+[TailwindCSS](https://tailwindcss.com/docs/installation)
+
 ## Installation
 
 Via Composer

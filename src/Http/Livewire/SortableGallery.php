@@ -40,12 +40,12 @@ class SortableGallery extends Component
                 ->active()
                 ->withSelectedFilters($this->selectedFilters)
                 ->orderBy('created_at', 'desc')
-                ->paginate(config('website.misc.gallery_pagination'));
+                ->paginate(config('sortable-gallery.images_per_page'));
         } else {
             $images = GalleryImage::query()
                 ->active()
                 ->orderBy('created_at', 'desc')
-                ->paginate(config('website.misc.gallery_pagination'));
+                ->paginate(config('sortable-gallery.images_per_page'));
         }
 
         // set image ids for alpinejs watcher

@@ -2,6 +2,10 @@
 
 All notable changes to `sortable-gallery` will be documented in this file.
 
+## v1.0.6 - 2023-03-08
+
+Fixed the gallery filters to work subtractively instead of additively.
+
 ## v1.0.5 - 2023-02-20
 
 Fixed the pagination config issue

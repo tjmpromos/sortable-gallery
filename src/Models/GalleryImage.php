@@ -88,8 +88,12 @@ class GalleryImage extends Model implements HasMedia
 
         $tagIds = collect($tagIds)->flatten()->toArray();
 
-        $query->whereHas('tags', function (Builder $query) use ($tagIds) {
+        $query->whereHas('tags', function ($query) use ($tagIds) {
             $query->whereIn('tags.id', $tagIds);
-        });
+        })
+            ->whereHas('tags', function ($query) use ($tagIds) {
+                $query->whereIn('tags.id', $tagIds);
+            }, '>=', count($tagIds))
+            ->get();
     }
 }

@@ -19,8 +19,11 @@ use Tjmpromos\SortableGallery\Models\GalleryTag;
 class GalleryImageCategoryResource extends Resource
 {
     protected static ?string $model = GalleryImageCategory::class;
+
     protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationLabel = 'Filter Groups';
+
     protected static ?string $label = 'Filter Group';
 
     public static function getNavigationGroup(): string

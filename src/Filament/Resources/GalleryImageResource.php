@@ -23,8 +23,11 @@ use Tjmpromos\SortableGallery\Models\GalleryImageCategory;
 class GalleryImageResource extends Resource
 {
     protected static ?string $model = GalleryImage::class;
+
     protected static ?int $navigationSort = 1;
+
     protected static ?string $navigationLabel = 'Images';
+
     protected static ?string $label = 'Gallery Image';
 
     public static function getNavigationGroup(): string

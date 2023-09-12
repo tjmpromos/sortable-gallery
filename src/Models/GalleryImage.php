@@ -25,6 +25,7 @@ class GalleryImage extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $table = 'sortable_gallery_images';
+
     protected $guarded = ['id'];
 
     protected $casts = [

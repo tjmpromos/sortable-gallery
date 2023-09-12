@@ -16,6 +16,7 @@ class GalleryImageCategory extends Model
     use HasFactory;
 
     protected $table = 'sortable_gallery_image_categories';
+
     protected $guarded = ['id'];
 
     protected $casts = [

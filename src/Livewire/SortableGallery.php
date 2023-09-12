@@ -47,6 +47,17 @@ class SortableGallery extends Component
 
     }
 
+    #[Computed]
+    public function filterGroups()
+    {
+        return GalleryImageCategory::query()
+            ->select('name', 'filter_type')
+            ->get()
+            ->flatMap(function ($item) {
+                return [$item->name => $item->filter_type];
+            })->toArray();
+    }
+
     public function updatingSelectedFilters(): void
     {
         $this->resetPage();

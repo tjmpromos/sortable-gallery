@@ -63,8 +63,21 @@
                                                 :aria-expanded="expanded"
                                                 class="flex w-full items-center justify-between p-2 text-gray-400 hover:text-gray-500"
                                                 aria-controls="filter-section-{{ $loop->index }}">
-                                            <span
-                                                class="text-sm font-semibold text-gray-900">{{ str($key)->title() }}</span>
+                                            <span class="text-sm font-semibold text-gray-900">{{ str($key)->title() }}
+                                                @if (
+                                                    $selectedCount = array_reduce(
+                                                        $selectedFilters,
+                                                        function ($acc, $item) use ($key) {
+                                                            return str_starts_with($item, str($key)->title() . '|') ? $acc + 1 : $acc;
+                                                        },
+                                                        0))
+                                                    <span
+                                                        class="ml-2 rounded-full bg-blue-500 px-2 text-sm text-white">{{ $selectedCount }}</span>
+                                                @endif
+                                            </span>
+
+
+
                                             <span class="ml-6 flex h-7 items-center">
                                                 <svg x-bind:class="{ 'rotate-0': expanded, '-rotate-180': !expanded }"
                                                      class="h-5 w-5 rotate-0 transform"
@@ -131,20 +144,28 @@
                         </svg>
                     </button>
 
-
                     <div class="hidden lg:block">
-
                         <form class="space-y-10 divide-y divide-gray-200">
                             @foreach ($this->filters as $key => $filterGroup)
                                 <div @class(['pt-10' => $loop->index > 0])>
                                     <fieldset>
                                         <legend class="w-full px-2 font-semibold">
-                                            {{ str($key)->title() }}
+                                             {{ str($key)->title() }}
+                                                  @if (
+                                                      $selectedCount = array_reduce(
+                                                          $selectedFilters,
+                                                          function ($acc, $item) use ($key) {
+                                                              return str_starts_with($item, str($key)->title() . '|') ? $acc + 1 : $acc;
+                                                          },
+                                                          0))
+                                                      <span
+                                                          class="ml-2 rounded-full bg-blue-500 px-2 text-sm text-white">{{ $selectedCount }}</span>
+                                                  @endif
+
                                         </legend>
                                         <div class="space-y-3 pt-6">
                                             @foreach ($filterGroup as $tag)
                                                 <div class="flex items-center">
-                                                    {{--                                                    @ray(collect(selectedFilters))--}}
                                                     <input
                                                         id="{{ str(implode('-', [$key, $tag->name, $loop->parent->index]))->slug() }}"
                                                         name="filter[]"
@@ -164,7 +185,6 @@
                             @endforeach
                         </form>
                     </div>
-
                 </aside>
 
                 {{-- Image grid --}}

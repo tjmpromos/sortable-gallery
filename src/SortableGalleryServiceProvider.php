@@ -5,7 +5,7 @@ namespace Tjmpromos\SortableGallery;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Tjmpromos\SortableGallery\Http\Livewire\SortableGallery;
+use Tjmpromos\SortableGallery\Livewire\SortableGallery;
 
 class SortableGalleryServiceProvider extends PackageServiceProvider
 {
@@ -20,10 +20,10 @@ class SortableGalleryServiceProvider extends PackageServiceProvider
             ->name('sortable-gallery')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigrations(['create_gallery_images_table']);
+            ->hasMigrations(['create_gallery_images_table', 'create_gallery_image_categories_table']);
     }
 
-    public function packageBooted()
+    public function packageBooted(): void
     {
         Livewire::component('sortable-gallery', SortableGallery::class);
     }

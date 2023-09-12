@@ -2,55 +2,70 @@
 
 namespace Tjmpromos\SortableGallery\Filament\Resources;
 
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\CreateGalleryImage;
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\EditGalleryImage;
-use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages\ListGalleryImages;
+use Filament\Tables\Table;
+use Tjmpromos\SortableGallery\Filament\Resources\GalleryImageResource\Pages;
 use Tjmpromos\SortableGallery\Models\GalleryImage;
+use Tjmpromos\SortableGallery\Models\GalleryImageCategory;
 
 class GalleryImageResource extends Resource
 {
     protected static ?string $model = GalleryImage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-photograph';
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $navigationLabel = 'Images';
+
+    protected static ?string $label = 'Gallery Image';
+
+    public static function getNavigationGroup(): string
+    {
+        return config('sortable-gallery.navigation_group_label');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Grid::make(5)
-                ->schema([
-                    TextInput::make('name')
-                        ->autofocus()
-                        ->required()
-                        ->rules('required', 'max:255')
-                        ->columnSpan(4),
-                    Toggle::make('active')
-                        ->default(true)
-                        ->columnSpan(1)
-                        ->inline(false),
-                    SpatieMediaLibraryFileUpload::make('gallery_image')
-                        ->disk(config('sortable-gallery.media_library.disk_name'))
-                        ->collection('gallery_images')
-                        ->visibility('public')
-                        ->conversion('preview')
-                        ->columnSpan(2),
-                    Fieldset::make('Image Tags')
-                        ->schema(GalleryImageResource::generateTagForms())
-                        ->columnSpan(3),
-                ]),
+                Grid::make([
+                    'default' => 1,
+                    'md' => 2,
+                ])
+                    ->schema([
+                        Section::make()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->autofocus()
+                                    ->required()
+                                    ->rules('required', 'max:255'),
+                                Toggle::make('active')
+                                    ->default(true)
+                                    ->columnSpan(1)
+                                    ->inline(false),
+                                SpatieMediaLibraryFileUpload::make('gallery_image')
+                                    ->disk(config('sortable-gallery.media_library.disk_name'))
+                                    ->collection('gallery_images')
+                                    ->visibility('public')
+                                    ->conversion('preview')
+                                    ->columnSpanfull(),
+                            ])
+                            ->columnSpan(1),
+                        Section::make('Filter Groups')
+                            ->schema(self::generateTagForms())
+                            ->columnSpan(1),
+                    ]),
             ]);
     }
 
@@ -67,6 +82,9 @@ class GalleryImageResource extends Resource
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+                SpatieTagsColumn::make('tags')
+                    ->searchable(),
+
             ])
             ->filters([
                 //
@@ -75,7 +93,12 @@ class GalleryImageResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
             ]);
     }
 
@@ -89,18 +112,19 @@ class GalleryImageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListGalleryImages::route('/'),
-            'create' => CreateGalleryImage::route('/create'),
-            'edit' => EditGalleryImage::route('/{record}/edit'),
+            'index' => Pages\ListGalleryImages::route('/'),
+            'create' => Pages\CreateGalleryImage::route('/create'),
+            'edit' => Pages\EditGalleryImage::route('/{record}/edit'),
         ];
     }
 
     private static function generateTagForms(): array
     {
-        return  array_map(function ($type) {
+        return array_map(function ($type) {
             return SpatieTagsInput::make($type)
+                ->hint('Hidden')
                 ->type($type)
-                ->placeholder('Enter tags');
-        }, config('sortable-gallery.tag_types'));
+                ->placeholder('Add filter tag');
+        }, GalleryImageCategory::pluck('name')->toArray());
     }
 }

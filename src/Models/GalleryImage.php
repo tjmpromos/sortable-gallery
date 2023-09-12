@@ -12,11 +12,19 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
+/**
+ * @method active()
+ * @method notActive()
+ *
+ * @property mixed $name
+ */
 class GalleryImage extends Model implements HasMedia
 {
     use HasFactory;
-    use InteractsWithMedia;
     use HasTags;
+    use InteractsWithMedia;
+
+    protected $table = 'sortable_gallery_images';
 
     protected $guarded = ['id'];
 
@@ -67,33 +75,55 @@ class GalleryImage extends Model implements HasMedia
         $query->where('active', 1);
     }
 
+    public function scopeNotActive(Builder $query): void
+    {
+        $query->where('active', 0);
+    }
+
     public function scopeWithSelectedFilters(Builder $query, array $filters): void
     {
         $tagIds = [];
 
-        // TODO: Refactor this to filter out to use tags selected
-        $tags = collect($filters)
+        $test = collect($filters)
             ->map(function ($value) {
                 [$type, $tag] = explode('|', $value);
 
                 return compact('type', 'tag');
-            })
-            ->groupBy('type')
+            });
+
+        $filterGroups = GalleryImageCategory::query()
+            ->select('name', 'filter_type')
+            ->whereIn('name', $test->pluck('type')->unique())
+            ->get()
+            ->flatMap(function ($item) {
+                return [$item->name => $item->filter_type];
+            });
+
+        collect($filters)
+            ->map(function ($value) {
+                [$type, $tag] = explode('|', $value);
+
+                return compact('type', 'tag');
+            })->groupBy('type')
             ->map->pluck('tag')
-            ->each(function ($tagNames, $tagType) use (&$tagIds) {
-                $tagIds[$tagType] = static::convertToTags($tagNames, $tagType)
+            ->each(function ($tagNames, $tagType) use (&$tagIds, $filterGroups) {
+                $tagIds[$filterGroups[$tagType]] = static::convertToTags($tagNames, $tagType)
                     ->pluck('id')
                     ->toArray();
             });
 
-        $tagIds = collect($tagIds)->flatten()->toArray();
+        if ($tagIds['single'] ?? false) {
+            $query->whereHas('tags', function ($query) use ($tagIds) {
+                $query->whereIn('tags.id', $tagIds['single'] ?? []);
+            }, '>=', count($tagIds['single'] ?? []));
+        }
+        if ($tagIds['multiple'] ?? false) {
+            $query->whereHas('tags', function ($query) use ($tagIds) {
+                $query->whereIn('tags.id', $tagIds['multiple'] ?? []);
+            });
+        }
 
-        $query->whereHas('tags', function ($query) use ($tagIds) {
-            $query->whereIn('tags.id', $tagIds);
-        })
-            ->whereHas('tags', function ($query) use ($tagIds) {
-                $query->whereIn('tags.id', $tagIds);
-            }, '>=', count($tagIds))
-            ->get();
+        $query->get();
+
     }
 }

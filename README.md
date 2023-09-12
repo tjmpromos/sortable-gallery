@@ -29,6 +29,7 @@ These packages are not required, but are used by default for styling and interac
 
 ## Installation
 
+
 Via Composer
 
 ``` bash
@@ -47,26 +48,6 @@ You'll need to migrate some tables into your database to get started. To do this
 php artisan migrate
 ```
 
-Each time you upgrade Filament, you need to run the filament:upgrade command. We recommend adding this to your composer.json's post-update-cmd:
-
-```
-"post-update-cmd": [
-    // ...
-    "@php artisan filament:upgrade"
-],
-```
-
-You can now create a new user account using:
-
-``` bash
-php artisan make:filament-user
-```
-
-Now, you can visit your admin panel at /admin to sign in with the credentials you just created.
-
-Once you are logged in, you will see Gallery Images on the left hand side and you can begin adding images.
-
-
 ### Existing Applications
 
 If you are currently using Filament or have a media table, you may run into conflicts while migrating. To help alleviate this issue, we've provided some publishable migrations. You can export them to your `database/migrations` directory by running:
@@ -74,13 +55,6 @@ If you are currently using Filament or have a media table, you may run into conf
 ``` bash
 php artisan vendor:publish --tag=sortable-gallery-migrations
 ```
-
-### Installing TailwindCSS
-
-This option is not entirely necessary, but if you wish to use our default styling, you'll need to have TailwindCSS installed in your project. You are more than welcome to [publish the livewire component](#publishing-and-editing-the-livewire-component) and roll your own styling.
-
-We highly recommend following the appropriate [installation instructions](https://tailwindcss.com/docs/installation) from the documentation on TailwindCSS website if you decide to utilize our default styling.
-
 ### Publishing and Editing The Config File
 
 But first things first! You should probably publish the config file so that you can create your categories. You can do that by running:
@@ -93,15 +67,34 @@ This will create `config/sortable-gallery.php` which will give you a few options
 
 `media_library`
 
-This can be local storage or any other media disk you are using in your application such as S3.
-
-`tag_types`
-
 This can be any number of tag types (think of them like categories) that you wish to group your tags into. We utilize them for things like colors, product options, etc...
 
 `preview_image_size`
 
 This allows you to set the image preview size for displaying on the front end.
+
+## Add to your FilamentPHP v3 admin panel
+Add the following to your FilamentPHP AdminPanelProvider.php file or the Panel provider file of your choice:
+
+```php
+use Tjmpromos\SortableGallery\SortableGalleryPlugin;
+
+class AdminPanelProvider extends PanelProvider
+{
+ublic function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->default()
+            ->id('admin')
+            ->path('admin')
+             //... other panel config
+             ->plugins([
+                SortableGalleryPlugin::make(),
+            ]);
+    }
+}
+
+```
 
 ### Publishing and Editing the Livewire Component
 We use [BaguetteBox.js](https://feimosi.github.io/baguetteBox.js/) for our lightbox and tried to make the UI as non-intrusive as possible, but you are welcome to use whatever you'd like. You can publish the views and edit the `resources/vendor/sortable-gallery/livewire` view to use whatever you'd like.

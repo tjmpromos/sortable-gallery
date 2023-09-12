@@ -12,12 +12,19 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
+/**
+ * @method active()
+ * @method notActive()
+ *
+ * @property mixed $name
+ */
 class GalleryImage extends Model implements HasMedia
 {
     use HasFactory;
-    use InteractsWithMedia;
     use HasTags;
+    use InteractsWithMedia;
 
+    protected $table = 'sortable_gallery_images';
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -65,6 +72,11 @@ class GalleryImage extends Model implements HasMedia
     public function scopeActive(Builder $query): void
     {
         $query->where('active', 1);
+    }
+
+    public function scopeNotActive(Builder $query): void
+    {
+        $query->where('active', 0);
     }
 
     public function scopeWithSelectedFilters(Builder $query, array $filters): void

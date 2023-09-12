@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    'navigation_group_label' => 'Sortable Gallery',
+
     /**
      * The disk that the Filament admin panel will save the image files too.
      */
@@ -12,17 +15,6 @@ return [
      *   Set amount of images per page in the gallery
      */
     'images_per_page' => 16,
-
-    /**
-     * Tag types used to group gallery image filters. These are used to create the
-     * tag input fields on the gallery image resource forms. This package uses
-     * spatie/laravel-tags package to manage the tags.
-     */
-    'tag_types' => [
-        'Type 1',
-        'Type 2',
-        'Type 3',
-    ],
 
     /**
      * The default image sizes used to generate the image conversions for the

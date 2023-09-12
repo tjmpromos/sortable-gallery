@@ -1,9 +1,9 @@
 <div x-data="{
         menu: false,
-        imageIds: @entangle('imageIds'),
+        selectedFilters: @entangle('selectedFilters'),
         init() {
             this.initBaguetteBox();
-            $watch('imageIds', () => {
+            $watch('selectedFilters', () => {
                 this.initBaguetteBox();
             })
         },
@@ -46,7 +46,7 @@
 
                     {{-- Filters --}}
                     <form x-data="{ active: 1 }" class="mt-4">
-                        @foreach ($this->filters as $key => $filters)
+                        @foreach ($this->filters as $key => $filterGroup)
                             <div class="border-t border-gray-200 pt-4 pb-4" x-data="{
                                 id: {{ $loop->iteration }},
                                 get expanded() {
@@ -80,12 +80,12 @@
                                     <div x-show="expanded" x-collapse>
                                         <div class="px-4 pt-4 pb-2" id="filter-section-{{ $loop->index }}">
                                             <div class="space-y-6">
-                                                @foreach ($filters as $tag)
+                                                @foreach ($filterGroup as $tag)
                                                     <div class="flex items-center">
                                                         <input
                                                             id="{{ str(implode('-', [$key, $tag->name, $loop->parent->index, 'mobile']))->slug() }}"
                                                             name="filter[]"
-                                                            wire:model="selectedFilters"
+                                                            wire:model.live="selectedFilters"
                                                             value="{{ $key }}|{{ $tag->name }}"
                                                             type="checkbox"
                                                             class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -103,17 +103,18 @@
                         @endforeach
                     </form>
 
-                    @if (!empty($selectedFilters))
-                        <button class="transition-color px-2 py-2 font-semibold hover:bg-red-500 hover:text-white"
+                    @if (!empty($this->selectedFilters))
+                        <button class="transition px-2 py-2 font-semibold bg-red-500 hover:bg-red-600 text-white"
                                 x-on:click="$wire.clearFilters()">Clear Filters
                         </button>
                     @endif
+
 
                 </div>
             </div>
         </div>
 
-        <main class="mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div class="mx-auto max-w-2xl py-12 px-4 sm:px-6 lg:max-w-7xl lg:px-8 select-none">
 
             <div class="pt-12 lg:grid lg:grid-cols-3 gap-x-8 xl:grid-cols-4">
                 <aside>
@@ -134,20 +135,20 @@
                     <div class="hidden lg:block">
 
                         <form class="space-y-10 divide-y divide-gray-200">
-                            @foreach ($this->filters as $key => $filters)
+                            @foreach ($this->filters as $key => $filterGroup)
                                 <div @class(['pt-10' => $loop->index > 0])>
                                     <fieldset>
                                         <legend class="w-full px-2 font-semibold">
                                             {{ str($key)->title() }}
                                         </legend>
                                         <div class="space-y-3 pt-6">
-                                            @foreach ($filters as $tag)
+                                            @foreach ($filterGroup as $tag)
                                                 <div class="flex items-center">
                                                     {{--                                                    @ray(collect(selectedFilters))--}}
                                                     <input
                                                         id="{{ str(implode('-', [$key, $tag->name, $loop->parent->index]))->slug() }}"
                                                         name="filter[]"
-                                                        wire:model="selectedFilters"
+                                                        wire:model.live="selectedFilters"
                                                         value="{{ $key }}|{{ $tag->name }}"
                                                         type="checkbox"
                                                         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -175,9 +176,9 @@
                             <div class="mx-auto max-w-2xl px-4 lg:max-w-7xl">
 
                                 <div class="min-h-12 flex justify-end">
-                                    @if (count($selectedFilters) > 0)
+                                    @if (count($this->selectedFilters) > 0)
                                         <button
-                                            class="transition-color rounded px-2 py-1 font-semibold hover:bg-red-500 hover:text-white"
+                                            class="transition px-2 py-2 font-semibold bg-red-500 hover:bg-red-600 text-white"
                                             x-on:click="$wire.clearFilters()">Clear Filters
                                         </button>
                                     @endif
@@ -186,15 +187,15 @@
                                 <div
                                     id="sortableGallery"
                                     class="gallery mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                                    @foreach ($galleryImages as $galleryImage)
+                                    @foreach ($this->images as $galleryImage)
                                         @if ($galleryImage->hasMedia('gallery_images'))
                                             <div class="group relative cursor-pointer gallery_{{ $galleryImage->id }}"
                                                  wire:key="gallery_{{ $galleryImage->id }}">
                                                 <figure
                                                     class="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md group-hover:opacity-75">
                                                     <a href="{{ $galleryImage->getFirstMediaUrl('gallery_images') }}"
-                                                        data-caption="{{ $galleryImage->name }}"
-                                                         class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
+                                                       data-caption="{{ $galleryImage->name }}"
+                                                       class="transform bg-white transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105">
                                                         <div class="aspect-h-1 aspect-w-1">
                                                             {{ $galleryImage->getFirstMedia('gallery_images')->img('preview')->attributes([
                                                                     'alt' => $galleryImage->name,
@@ -212,14 +213,12 @@
                                             </div>
                                         @endif
                                     @endforeach
-
                                 </div>
-
                             </div>
                         </div>
 
                         <div class="mx-auto mt-12 px-8">
-                            {{ $galleryImages->links() }}
+                            {{ $this->images->links() }}
                         </div>
 
                     </div>
@@ -227,25 +226,25 @@
 
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 </div>
 
 @push('meta')
-    @if (!$galleryImages->onFirstPage())
-        <link rel="prev" href="{{ $galleryImages->previousPageUrl() }}">
+    @if (!$this->images->onFirstPage())
+        <link rel="prev" href="{{ $this->images->previousPageUrl() }}">
     @endif
-    @if ($galleryImages->hasMorePages())
-        <link rel="next" href="{{ $galleryImages->nextPageUrl() }}">
+    @if ($this->images->hasMorePages())
+        <link rel="next" href="{{ $this->images->nextPageUrl() }}">
     @endif
 @endpush
 
 @push('head-styles')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.css"
-        integrity="sha256-cLMYWYYutHkt+KpNqjg7NVkYSQ+E2VbrXsEvOqU7mL0=" crossorigin="anonymous">
+          integrity="sha256-cLMYWYYutHkt+KpNqjg7NVkYSQ+E2VbrXsEvOqU7mL0=" crossorigin="anonymous">
 @endpush
 
 @push('footer-scripts')
-<script src="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js"
-    integrity="sha256-ULQV01VS9LCI2ePpLsmka+W0mawFpEA0rtxnezUj4A4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/baguettebox.js@1.11.1/dist/baguetteBox.min.js"
+            integrity="sha256-ULQV01VS9LCI2ePpLsmka+W0mawFpEA0rtxnezUj4A4=" crossorigin="anonymous"></script>
 @endpush

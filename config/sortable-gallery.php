@@ -2,6 +2,11 @@
 
 return [
 
+    /**
+     * The prefix for the database tables used by the package.
+     */
+    'table_prefix' => 'sortable_gallery_',
+
     'navigation_group_label' => 'Sortable Gallery',
 
     /**

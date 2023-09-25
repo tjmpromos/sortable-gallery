@@ -23,6 +23,12 @@ class GalleryImageCategory extends Model
         'is_hidden' => 'boolean',
     ];
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->table = config('sortable-gallery.table_prefix') . $this->table;
+    }
+
     public function scopeIsHidden(Builder $query): void
     {
         $query->where('is_hidden', 1);

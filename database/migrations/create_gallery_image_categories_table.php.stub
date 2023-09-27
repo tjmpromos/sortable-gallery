@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create( config('sortable-gallery.table_prefix') . 'image_categories', function (Blueprint $table) {
+        Schema::create( 'sortable_gallery_image_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->boolean('is_hidden')->default(false);

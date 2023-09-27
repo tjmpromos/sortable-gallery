@@ -24,19 +24,13 @@ class GalleryImage extends Model implements HasMedia
     use HasTags;
     use InteractsWithMedia;
 
-    protected $table = 'images';
+    protected $table = 'sortable_gallery_images';
 
     protected $guarded = ['id'];
 
     protected $casts = [
         'active' => 'boolean',
     ];
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->table = config('sortable-gallery.table_prefix') . $this->table;
-    }
 
     /**
      * Register the media collections.

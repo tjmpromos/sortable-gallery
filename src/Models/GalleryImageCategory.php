@@ -15,19 +15,13 @@ class GalleryImageCategory extends Model
 {
     use HasFactory;
 
-    protected $table = 'image_categories';
+    protected $table = 'sortable_gallery_image_categories';
 
     protected $guarded = ['id'];
 
     protected $casts = [
         'is_hidden' => 'boolean',
     ];
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->table = config('sortable-gallery.table_prefix') . $this->table;
-    }
 
     public function scopeIsHidden(Builder $query): void
     {

@@ -5,8 +5,8 @@ namespace Tjmpromos\SortableGallery\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Image\Enums\Fit;
 use Spatie\Image\Exceptions\InvalidManipulation;
-use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -50,15 +50,15 @@ class GalleryImage extends Model implements HasMedia
      */
     public function registerMediaConversions(?Media $media = null): void
     {
-        // @phpstan-ignore-next-line
-        $this->addMediaConversion('thumb')
-            ->fit(Manipulations::FIT_CROP, 100, 100)
+           $this->addMediaConversion('thumb')
+            ->fit(fit: Fit::Crop,
+                desiredWidth: 100,
+                desiredHeight: 100)
             ->optimize()
             ->performOnCollections('gallery_images');
 
-        // @phpstan-ignore-next-line
-        $this->addMediaConversion('preview')
-            ->crop(Manipulations::CROP_CENTER,
+           $this->addMediaConversion('preview')
+            ->crop(
                 config('sortable-gallery.preview_image_size.width'),
                 config('sortable-gallery.preview_image_size.height'))
             ->width(config('sortable-gallery.preview_image_size.width'))

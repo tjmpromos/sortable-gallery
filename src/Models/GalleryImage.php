@@ -50,14 +50,14 @@ class GalleryImage extends Model implements HasMedia
      */
     public function registerMediaConversions(?Media $media = null): void
     {
-           $this->addMediaConversion('thumb')
+        $this->addMediaConversion('thumb')
             ->fit(fit: Fit::Crop,
                 desiredWidth: 100,
                 desiredHeight: 100)
             ->optimize()
             ->performOnCollections('gallery_images');
 
-           $this->addMediaConversion('preview')
+        $this->addMediaConversion('preview')
             ->crop(
                 config('sortable-gallery.preview_image_size.width'),
                 config('sortable-gallery.preview_image_size.height'))

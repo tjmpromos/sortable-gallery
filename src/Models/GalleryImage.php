@@ -54,15 +54,15 @@ class GalleryImage extends Model implements HasMedia
             ->fit(fit: Fit::Crop,
                 desiredWidth: 100,
                 desiredHeight: 100)
+               ->sharpen(amount: 10)
             ->optimize()
             ->performOnCollections('gallery_images');
 
            $this->addMediaConversion('preview')
-            ->crop(
+            ->fit(Fit::Crop,
                 config('sortable-gallery.preview_image_size.width'),
                 config('sortable-gallery.preview_image_size.height'))
-            ->width(config('sortable-gallery.preview_image_size.width'))
-            ->height(config('sortable-gallery.preview_image_size.height'))
+               ->sharpen(amount: 10)
             ->optimize()
             ->performOnCollections('gallery_images');
     }
